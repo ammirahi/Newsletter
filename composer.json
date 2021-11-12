@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
+        "friendsofsymfony/ckeditor-bundle": "^2.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "5.3.*",
@@ -24,6 +25,7 @@
         "symfony/http-client": "5.3.*",
         "symfony/intl": "5.3.*",
         "symfony/mailer": "5.3.*",
+        "symfony/messenger": "5.3.*",
         "symfony/mime": "5.3.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/notifier": "5.3.*",
@@ -78,7 +80,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "ckeditor:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

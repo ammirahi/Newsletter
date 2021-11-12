@@ -1,0 +1,10 @@
+<h4>Bienvenue {{user.last_name}}</h4>
+<p>Vous recevez cet email car vous êtes abonné à la newsletter {{ newsletter.name }}.</p>
+<div>
+    {{newsletter.content|raw}}
+</div>
+
+<p>
+    <a href="{{ absolute_url(path('newsletters_unsubscribe', {id: user.id, newsletter:newsletter.id, token: user.validationToken})) }}">Cliquez ici </a> pour vous désinscrire. /
+    <a href="">Cliquez ici </a> pour modifier vos abonnements.
+</p>

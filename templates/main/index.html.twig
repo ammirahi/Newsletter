@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
     {% for message in app.flashes('message') %}
         <div>{{ message }}</div>
     {% endfor %}
+    <h2>Bienvenue dans notre newslatters</h2>
+    <p>Pour vous abonner cliquez sur le bouton ci-dessous <a href="{{ absolute_url(path('newsletters_home')) }}">click me</a></p>
 {% endblock %}

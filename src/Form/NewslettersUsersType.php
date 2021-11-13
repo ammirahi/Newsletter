@@ -19,7 +19,7 @@ class NewslettersUsersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('last_name', TypeTextType::class)
+            ->add('first_name', TypeTextType::class, ['required' => false])
             ->add('email', EmailType::class)
             ->add('categories', EntityType::class, [
                 'class' => Categories::class,

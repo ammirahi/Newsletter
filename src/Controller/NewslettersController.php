@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Newsletters\Newsletters;
 use App\Entity\Newsletters\Users;
+use App\Form\NewsletterEditUsersType;
 use App\Form\NewslettersType;
 use App\Form\NewslettersUsersType;
 use App\Message\SendNewsletterMessage;
 use App\Repository\Newsletters\NewslettersRepository;
+use App\Service\SendNewsletterService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +62,34 @@ class NewslettersController extends AbstractController
         return $this->render('newsletters/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/update/{id}/{token}", name="update")
+     */
+    public function confirm(Request $request, Users $user, $token): Response
+    {
+        if($user->getValidationToken() != $token){
+            throw $this->createNotFoundException('Page non trouvée');
+        }
+
+        $form = $this->createForm(NewsletterEditUsersType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('message', 'Vous avez mettre à jour votre informations avec succès.');
+            return $this->redirectToRoute('home');$em->flush();
+        }
+
+        return $this->render('newsletters/edit.html.twig', array(
+            'user' => $user,
+            'form' => $form->createView(),
+        ));
     }
 
     // /**
@@ -119,46 +149,34 @@ class NewslettersController extends AbstractController
     /**
      * @Route("/send/{id}", name="send")
      */
-    public function send(Newsletters $newsletter, MessageBusInterface $messageBus): Response
+    public function send(Newsletters $newsletter, SendNewsletterService $sv, MessageBusInterface $messageBus): Response
     {
         $users = $newsletter->getCategories()->getUsers();
 
         foreach($users as $user){
             if($user->getIsValid()){
-                $messageBus->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
-            }
+                $sv->send($user, $newsletter);
+                // $messageBus->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
+            } 
         }
-
-        // $newsletter->setIsSent(true);
-
-        // $em = $this->getDoctrine()->getManager();
-        // $em->persist($newsletter);
-        // $em->flush();
-
         return $this->redirectToRoute('newsletters_list');
     }
 
     /**
-     * @Route("/unsubscribe/{id}/{newsletter}/{token}", name="unsubscribe")
+     * @Route("/unsubscribe/{id}/{token}", name="unsubscribe")
      */
-    public function unsubscribe(Users $user, Newsletters $newsletter, $token): Response
+    public function unsubscribe(Users $user, $token): Response
     {
         if($user->getValidationToken() != $token){
             throw $this->createNotFoundException('Page non trouvée');
         }
 
         $em = $this->getDoctrine()->getManager();
-
-        if(count($user->getCategories()) > 1){
-            $user->removeCategory($newsletter->getCategories());
-            $em->persist($user);
-        }else{
-            $em->remove($user);
-        }
+        $em->remove($user);
         $em->flush();
 
-        $this->addFlash('message', 'Newsletter supprimée');
+        $this->addFlash('message', 'Vous vous désinscrivez de notre newsletter, vous ne recevrez plus aucun email.');
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('home');
     }
 }

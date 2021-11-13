@@ -5,6 +5,7 @@ namespace App\Entity\Newsletters;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\Newsletters\UsersRepository;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -21,7 +22,7 @@ class Users
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $last_name;
+    private $first_name;
     
     /**
      * @ORM\Column(type="string", length=255)
@@ -56,6 +57,7 @@ class Users
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
         $this->categories = new ArrayCollection();
     }
 
@@ -76,14 +78,14 @@ class Users
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->last_name;
+        return $this->first_name;
     }
 
-    public function setLastName(?string $last_name): self
+    public function setFirstName(?string $first_name): self
     {
-        $this->last_name = $last_name;
+        $this->first_name = $first_name;
 
         return $this;
     }

@@ -19,7 +19,7 @@ class SendNewsletterService
     {
         sleep(3);
         $email = (new TemplatedEmail())
-            ->from('newsletter@site.fr')
+            ->from('newsletter@site.ma')
             ->to($user->getEmail())
             ->subject($newsletter->getName())
             ->htmlTemplate('emails/newsletter.html.twig')

@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NewslettersController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/create", name="create")
      */
     public function index(Request $request, MailerInterface $mailer): Response
     {
@@ -46,7 +46,7 @@ class NewslettersController extends AbstractController
             foreach ($data as $element) {
                 $newsletter = $element;
                 $email = (new TemplatedEmail())
-                ->from('newsletter@site.fr')
+                ->from('newsletter@site.ma')
                 ->to($user->getEmail())
                 ->subject('Votre inscription à la newsletter')
                 ->htmlTemplate('emails/inscription.html.twig')
@@ -55,8 +55,8 @@ class NewslettersController extends AbstractController
                 $mailer->send($email);
             }
 
-            $this->addFlash('message', 'Vous vous êtes inscrit avec succès, vous avez reçu un e-mail, veuillez vérifier votre boîte mail.');
-            return $this->redirectToRoute('app_home');$em->flush();
+            $this->addFlash('message', 'Veuillez vérifier votre boîte mail. Vous avez reçu un e-mail pour la validation de votre compte.');
+            return $this->redirectToRoute('home');$em->flush();
         }
 
         return $this->render('newsletters/index.html.twig', [
@@ -67,7 +67,7 @@ class NewslettersController extends AbstractController
     /**
      * @Route("/update/{id}/{token}", name="update")
      */
-    public function confirm(Request $request, Users $user, $token): Response
+    public function update(Request $request, Users $user, $token): Response
     {
         if($user->getValidationToken() != $token){
             throw $this->createNotFoundException('Page non trouvée');
@@ -92,25 +92,25 @@ class NewslettersController extends AbstractController
         ));
     }
 
-    // /**
-    //  * @Route("/confirm/{id}/{token}", name="confirm")
-    //  */
-    // public function confirm(Users $user, $token): Response
-    // {
-    //     if($user->getValidationToken() != $token){
-    //         throw $this->createNotFoundException('Page non trouvée');
-    //     }
+    /**
+     * @Route("/confirm/{id}/{token}", name="confirm")
+     */
+    public function confirm(Users $user, $token): Response
+    {
+        if($user->getValidationToken() != $token){
+            throw $this->createNotFoundException('Page non trouvée');
+        }
 
-    //     $user->setIsValid(true);
+        $user->setIsValid(true);
 
-    //     $em = $this->getDoctrine()->getManager();
-    //     $em->persist($user);
-    //     $em->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
 
-    //     $this->addFlash('message', 'Compte activé');
+        $this->addFlash('message', 'Votre compte est activé avec succès');
 
-    //     return $this->redirectToRoute('app_home');
-    // }
+        return $this->redirectToRoute('home');
+    }
 
     /**
      * @Route("/redact", name="redact")
@@ -136,7 +136,7 @@ class NewslettersController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="list")
+     * @Route("/", name="list")
      */
     public function list(NewslettersRepository $newsletters): Response
     {
@@ -154,10 +154,8 @@ class NewslettersController extends AbstractController
         $users = $newsletter->getCategories()->getUsers();
 
         foreach($users as $user){
-            if($user->getIsValid()){
-                $sv->send($user, $newsletter);
-                // $messageBus->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
-            } 
+            $sv->send($user, $newsletter);
+            // $messageBus->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
         }
         return $this->redirectToRoute('newsletters_list');
     }

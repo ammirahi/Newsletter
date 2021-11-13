@@ -19,23 +19,16 @@ class NewslettersUsersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('first_name', TypeTextType::class, ['required' => false])
-            ->add('email', EmailType::class)
+            ->add('first_name', TypeTextType::class, ['required' => false, 'label' => 'Prénom :'])
+            ->add('email', EmailType::class, ['label' => 'É-mail :'])
             ->add('categories', EntityType::class, [
                 'class' => Categories::class,
+                'label' => 'Catégories :',
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true
             ])
-            ->add('is_rgpd', CheckboxType::class, [
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'Vous devez accepter la collecte de vos données personnelles'
-                    ])
-                ],
-                'label' => 'J\'accepte la collecte de mes données personnelles'
-            ])
-            ->add('envoyer', SubmitType::class)
+            ->add('envoyer', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
         ;
     }
 

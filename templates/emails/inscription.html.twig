@@ -1,6 +1,6 @@
 <h4>Bonjour {{ user.firstName }}</h4>
 
-<p>Vous avez été inscrit avec succès à la Newsletter : {{ newsletter.name }}</p>
-{# <p>
+<p>Vous avez été inscrit à la Newsletter : {{ newsletter.categories }}</p>
+<p>
     <a href="{{ absolute_url(path('newsletters_confirm', {id: user.id, token: token})) }}">Cliquez ici </a> pour confirmer votre inscription.
-</p> #}
+</p>

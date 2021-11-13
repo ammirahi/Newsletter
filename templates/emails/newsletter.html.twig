@@ -1,10 +1,13 @@
-<h4>Bienvenue {{user.firstName}}</h4>
-<p>Vous recevez cet email car vous êtes abonné à la newsletter {{ newsletter.name }}.</p>
+<b>Bienvenue {{user.firstName}}</b>
+<p class="mb-4">Vous recevez cet email car vous êtes abonné à la newsletter {{ newsletter.categories }}.</p>
+
+<h4>Tilte : {{ newsletter.name }}</h4>
+<h5>Contenu : </h5>
 <div>
     {{newsletter.content|raw}}
 </div>
 
-<p>
+<p class="mt-4">
     <a href="{{ absolute_url(path('newsletters_unsubscribe', {id: user.id, token: user.validationToken})) }}">Cliquez ici </a> pour vous désinscrire. /
     <a href="{{ absolute_url(path('newsletters_update', {id: user.id, token: user.validationToken})) }}">Cliquez ici </a> pour modifier vos abonnements.
 </p>

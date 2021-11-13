@@ -6,7 +6,7 @@
     <h1>Ecrivez votre newsletter</h1>
     {{form_start(form)}}
         {{form_row(form.name)}}
-        <p>Contenu</p>
+        <p>Contenu :</p>
         <div id="editor"></div>
         {{form_row(form.content)}}
         {{form_row(form.categories)}}
@@ -14,6 +14,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/balloon/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/balloon/ckeditor.js" defer></script>
     <script src="{{ asset('js/ckeditor.js') }}" defer></script>
 {% endblock %}

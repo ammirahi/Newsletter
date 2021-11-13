@@ -17,15 +17,16 @@ class NewsletterEditUsersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('first_name', TypeTextType::class, ['required' => false])
-        ->add('email', EmailType::class)
+        ->add('first_name', TypeTextType::class, ['required' => false, 'label' => 'Prénom :'])
+        ->add('email', EmailType::class, ['label' => 'É-mail :'])
         ->add('categories', EntityType::class, [
             'class' => Categories::class,
+            'label' => 'Catégories :',
             'choice_label' => 'name',
             'multiple' => true,
             'expanded' => true
         ])
-        ->add('modifier', SubmitType::class)
+        ->add('modifier', SubmitType::class, ['attr' => ['class' => 'btn btn-primary']])
         ;
     }
 

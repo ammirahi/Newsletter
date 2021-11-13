@@ -35,11 +35,6 @@ class Users
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $is_rgpd = false;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $validation_token;
@@ -47,7 +42,7 @@ class Users
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_valid = false;
+    private $validated = false;
 
     /**
      * @ORM\ManyToMany(targetEntity=Categories::class, inversedBy="users")
@@ -102,18 +97,6 @@ class Users
         return $this;
     }
 
-    public function getIsRgpd(): ?bool
-    {
-        return $this->is_rgpd;
-    }
-
-    public function setIsRgpd(bool $is_rgpd): self
-    {
-        $this->is_rgpd = $is_rgpd;
-
-        return $this;
-    }
-
     public function getValidationToken(): ?string
     {
         return $this->validation_token;
@@ -128,12 +111,12 @@ class Users
 
     public function getIsValid(): ?bool
     {
-        return $this->is_valid;
+        return $this->validated;
     }
 
-    public function setIsValid(bool $is_valid): self
+    public function setIsValid(bool $validated): self
     {
-        $this->is_valid = $is_valid;
+        $this->validated = $validated;
 
         return $this;
     }

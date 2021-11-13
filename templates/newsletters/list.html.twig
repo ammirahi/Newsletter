@@ -4,7 +4,8 @@
 
 {% block body %}
     <h1>Liste des newsletters</h1>
-    <table>
+    <a class="btn btn-primary mb-2" href="{{ absolute_url(path('newsletters_redact')) }}" role="button">Ajouter</a>
+    <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -21,7 +22,7 @@
                     <td>{{newsletter.id}}</td>
                     <td>{{newsletter.name}}</td>
                     <td>{{newsletter.createdAt|date}}</td>
-                    <td>{{newsletter.categories.name}}</td>
+                    <td>{{newsletter.categories}}</td>
                     <td>{{newsletter.categories.users|length}}</td>
                     <td>
                         {% if newsletter.isSent == false %}

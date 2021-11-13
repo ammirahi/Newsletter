@@ -4,8 +4,11 @@
 
 {% block body %}
     {% for message in app.flashes('message') %}
-        <div>{{ message }}</div>
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
     {% endfor %}
-    <h2>Bienvenue dans notre newslatters</h2>
-    <p>Pour vous abonner cliquez sur le bouton ci-dessous <a href="{{ absolute_url(path('newsletters_home')) }}">click me</a></p>
+    <h2 class="text-center mb-4 mt-4">Bienvenue dans notre newslatters</h2>
+    <p class="text-center" style="margin-bottom: 20rem;">Pour vous abonner cliquez sur le bouton ci-dessous <a href="{{ absolute_url(path('newsletters_create')) }}">click me</a></p>
+    <p class="text-center"><a href="{{ absolute_url(path('newsletters_list')) }}">Admin</a></p>
 {% endblock %}

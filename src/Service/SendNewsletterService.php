@@ -17,7 +17,7 @@ class SendNewsletterService
 
     public function send(Users $user, Newsletters $newsletter):void
     {
-        sleep(3);
+        sleep(40);
         $email = (new TemplatedEmail())
             ->from('newsletter@site.ma')
             ->to($user->getEmail())

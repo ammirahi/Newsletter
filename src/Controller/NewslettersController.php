@@ -154,8 +154,10 @@ class NewslettersController extends AbstractController
         $users = $newsletter->getCategories()->getUsers();
 
         foreach($users as $user){
-            $sv->send($user, $newsletter);
-            // $messageBus->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
+            if($user->getIsValid()){
+                // $sv->send($user, $newsletter);
+                $messageBus->dispatch(new SendNewsletterMessage($user->getId(), $newsletter->getId()));
+            }
         }
         return $this->redirectToRoute('newsletters_list');
     }

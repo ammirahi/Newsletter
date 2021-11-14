@@ -1,4 +1,3 @@
 <h4>Bonjour {{ user.firstName }}</h4>
 
-<p>Vous avez été inscrit à la Newsletter : {{ category }}</p>
-<p>Pour confirmer votre inscription, veuillez <a href="{{ absolute_url(path('newsletters_confirm', {id: user.id, token: token})) }}">Cliquez ici </a>.</p>
+<p>Vous avez été inscrit avec succès à la Newsletter : {{ category }}</p>

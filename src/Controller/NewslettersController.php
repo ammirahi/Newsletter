@@ -42,18 +42,16 @@ class NewslettersController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $data = $form->get('categories')->getData();
-            foreach ($data as $element) {
-                $category = $element;
-                $email = (new TemplatedEmail())
-                ->from('newsletter@site.ma')
-                ->to($user->getEmail())
-                ->subject('Votre inscription à la newsletter')
-                ->htmlTemplate('emails/inscription.html.twig')
-                ->context(compact('user', 'category', 'token'));
+            
+            $email = (new TemplatedEmail())
+            ->from('newsletter@site.ma')
+            ->to($user->getEmail())
+            ->subject('Confirmation de votre inscreption')
+            ->htmlTemplate('emails/confirmation.html.twig')
+            ->context(compact('user', 'token'));
 
-                $mailer->send($email);
-            }
+            $mailer->send($email);
+            
 
             $this->addFlash('message', 'Veuillez vérifier votre boîte mail. Vous avez reçu un e-mail pour la validation de votre compte.');
             return $this->redirectToRoute('home');$em->flush();
@@ -95,7 +93,7 @@ class NewslettersController extends AbstractController
     /**
      * @Route("/confirm/{id}/{token}", name="confirm")
      */
-    public function confirm(Users $user, $token): Response
+    public function confirm(Users $user, $token, MailerInterface $mailer): Response
     {
         if($user->getValidationToken() != $token){
             throw $this->createNotFoundException('Page non trouvée');
@@ -106,6 +104,19 @@ class NewslettersController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        $data = $user->getCategories();
+        foreach ($data as $element) {
+            $category = $element;
+            $email = (new TemplatedEmail())
+            ->from('newsletter@site.ma')
+            ->to($user->getEmail())
+            ->subject('Votre inscription à la newsletter')
+            ->htmlTemplate('emails/inscription.html.twig')
+            ->context(compact('user', 'category', 'token'));
+
+            $mailer->send($email);
+        }
 
         $this->addFlash('message', 'Votre compte est activé avec succès');
 

@@ -9,6 +9,9 @@
         </div>
     {% endfor %}
     <h2 class="text-center mb-4 mt-4">Bienvenue dans notre newslatters</h2>
-    <p class="text-center" style="margin-bottom: 20rem;">Pour vous abonner cliquez sur le bouton ci-dessous <a href="{{ absolute_url(path('newsletters_create')) }}">click me</a></p>
-    <p class="text-center"><a href="{{ absolute_url(path('newsletters_list')) }}">Admin</a></p>
+    <p class="text-center">Pour vous abonner cliquez sur le bouton ci-dessous</p>
+    <div class="col-md-12 text-center" style="margin-bottom: 18rem;">
+        <a class="btn btn-primary" href="{{ absolute_url(path('newsletters_subscribe')) }}">Abonner</a>
+    </div>
+    <p class="text-center"><a href="{{ absolute_url(path('newsletters_list')) }}">For Admin!</a></p>
 {% endblock %}

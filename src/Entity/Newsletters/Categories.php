@@ -109,7 +109,6 @@ class Categories
     public function removeNewsletter(Newsletters $newsletter): self
     {
         if ($this->newsletters->removeElement($newsletter)) {
-            // set the owning side to null (unless already changed)
             if ($newsletter->getCategories() === $this) {
                 $newsletter->setCategories(null);
             }

@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NewslettersController extends AbstractController
 {
     /**
-     * @Route("/create", name="create")
+     * @Route("/subscribe", name="subscribe")
      */
     public function index(Request $request, MailerInterface $mailer): Response
     {
@@ -44,13 +44,13 @@ class NewslettersController extends AbstractController
 
             $data = $form->get('categories')->getData();
             foreach ($data as $element) {
-                $newsletter = $element;
+                $category = $element;
                 $email = (new TemplatedEmail())
                 ->from('newsletter@site.ma')
                 ->to($user->getEmail())
                 ->subject('Votre inscription à la newsletter')
                 ->htmlTemplate('emails/inscription.html.twig')
-                ->context(compact('user', 'newsletter', 'token'));
+                ->context(compact('user', 'category', 'token'));
 
                 $mailer->send($email);
             }

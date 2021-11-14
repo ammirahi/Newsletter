@@ -22,7 +22,7 @@
                     <td>{{newsletter.id}}</td>
                     <td>{{newsletter.name}}</td>
                     <td>{{newsletter.createdAt|date}}</td>
-                    <td>{{newsletter.categories}}</td>
+                    <td>{{newsletter.categories.name}}</td>
                     <td>{{newsletter.categories.users|length}}</td>
                     <td>
                         {% if newsletter.isSent == false %}
